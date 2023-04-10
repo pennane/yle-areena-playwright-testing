@@ -15,5 +15,4 @@ export const openPathAndCloseCookiesPopup = async (
   await page.goto(location)
   await page.waitForLoadState('networkidle')
   await closeCookiesPopup(page)
-  await page.waitForTimeout(2000)
 }

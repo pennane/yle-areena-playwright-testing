@@ -6,9 +6,9 @@ export default defineConfig({
   forbidOnly: false,
   retries: 0,
   workers: 3,
-  reporter: 'list',
+  reporter: [['html', { open: 'never' }]],
   use: {
-    headless: true,
+    headless: false,
     baseURL: 'https://areena.yle.fi',
     viewport: {
       height: 1080,
@@ -20,13 +20,10 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] }
     }
-
-    // TODO: enable when basic setup works
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] }
-    // },
-
+    // }
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] }

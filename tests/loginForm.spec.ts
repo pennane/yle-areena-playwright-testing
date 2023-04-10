@@ -1,41 +1,67 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, Page } from '@playwright/test'
 import { openPathAndCloseCookiesPopup } from '../lib'
 
-test.beforeEach(async ({ page }) => {
-  openPathAndCloseCookiesPopup(page, '/tv')
+test.beforeEach(async ({ page }) => openPathAndCloseCookiesPopup(page, '/tv'))
 
-  await page.locator('.yle-header-tunnus-login').click()
-  await page.waitForTimeout(2000)
-})
+const VALID_EMAILS = [
+  'email@example.com',
+  'email@example.co.jp',
+  'firstname-lastname@example.com'
+]
+const INVALID_EMAILS = [
+  'plainaddress',
+  'Joe Smith <email@example.com>',
+  'Abc..123@example.com'
+]
 
-const VALID_EMAIL = 'email@example.com'
-const INVALID_EMAIL = 'Joe Smith <email@example.com>'
-const FORM_ERROR_SELECTOR = 'form fieldset > p[class*="Error"'
-
-test.describe.only('Account registration', async () => {
+test.describe('account registration', async () => {
   test.describe('email validation', async () => {
-    test('Should allow valid email', async ({ page }) => {
-      await page.locator('.register-button').click()
+    const testRegistrationEmail = async ({
+      page,
+      email,
+      shouldError
+    }: {
+      page: Page
+      email: string
+      shouldError: boolean
+    }) => {
+      await page.locator('.yle-header-tunnus-login').click()
 
-      const emailField = page.locator('#email')
-      await emailField.fill(VALID_EMAIL)
-      await emailField.blur()
+      const iframe = page.frameLocator('.tunnus-sdk__iframe')
 
-      const errorElement = page.locator(FORM_ERROR_SELECTOR)
+      await iframe
+        .locator('button', {
+          hasText: 'Luo Yle Tunnus'
+        })
+        .click()
 
-      expect(errorElement).not.toBeDefined()
-    })
-    test(`Should display error with invalid email`, async ({ page }) => {
-      await page.locator('.register-button').click()
+      await iframe.locator('#email').fill(email)
 
-      const emailField = page.locator('#email')
-      await emailField.fill(INVALID_EMAIL)
-      await emailField.blur()
+      await iframe.locator('button', { hasText: 'Luo Tunnus' }).click()
 
-      const errorElement = page.locator(FORM_ERROR_SELECTOR)
+      const errorText = iframe.locator('form fieldset > p[class*="Error"]', {
+        hasText: /Tarkista sähköpostiosoitteen muoto./
+      })
 
-      expect(errorElement).toBeDefined()
-      expect(errorElement).toContainText('Tarkista sähköpostiosoitteen muoto.')
-    })
+      await expect(errorText).toHaveCount(shouldError ? 1 : 0)
+    }
+
+    for (const email of VALID_EMAILS) {
+      test('should allow email "' + email + '"', ({ page }) =>
+        testRegistrationEmail({ email, page, shouldError: false })
+      )
+    }
+
+    for (const email of INVALID_EMAILS) {
+      test(
+        'should display error with invalid email "' + email + '"',
+        ({ page }) =>
+          testRegistrationEmail({
+            email,
+            page,
+            shouldError: true
+          })
+      )
+    }
   })
 })
