@@ -1,21 +1,21 @@
 import { test, expect, Page } from '@playwright/test'
 import { openPathAndCloseCookiesPopup } from '../lib'
 
-test.beforeEach(async ({ page }) => openPathAndCloseCookiesPopup(page, '/tv'))
+test.beforeEach(openPathAndCloseCookiesPopup('/tv'))
 
-const VALID_EMAILS = [
-  'email@example.com',
-  'email@example.co.jp',
-  'firstname-lastname@example.com'
-]
-const INVALID_EMAILS = [
-  'plainaddress',
-  'Joe Smith <email@example.com>',
-  'Abc..123@example.com'
-]
-
-test.describe('account registration', async () => {
+test.describe('account registration', () => {
   test.describe('email validation', async () => {
+    const VALID_EMAILS = [
+      'email@example.com',
+      'email@example.co.jp',
+      'firstname-lastname@example.com'
+    ]
+    const INVALID_EMAILS = [
+      'plainaddress',
+      'Joe Smith <email@example.com>',
+      'Abc..123@example.com'
+    ]
+
     const testRegistrationEmail = async ({
       page,
       email,
@@ -47,21 +47,17 @@ test.describe('account registration', async () => {
     }
 
     for (const email of VALID_EMAILS) {
-      test('should allow email "' + email + '"', ({ page }) =>
-        testRegistrationEmail({ email, page, shouldError: false })
-      )
+      test(`should allow email "${email}"`, ({ page }) =>
+        testRegistrationEmail({ email, page, shouldError: false }))
     }
 
     for (const email of INVALID_EMAILS) {
-      test(
-        'should display error with invalid email "' + email + '"',
-        ({ page }) =>
-          testRegistrationEmail({
-            email,
-            page,
-            shouldError: true
-          })
-      )
+      test(`should display error with invalid email "${email}"`, ({ page }) =>
+        testRegistrationEmail({
+          email,
+          page,
+          shouldError: true
+        }))
     }
   })
 })
