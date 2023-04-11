@@ -8,7 +8,7 @@ export default defineConfig({
   workers: 3,
   reporter: [['html', { open: 'never' }]],
   use: {
-    headless: false,
+    headless: true,
     baseURL: 'https://areena.yle.fi',
     viewport: {
       height: 1080,
