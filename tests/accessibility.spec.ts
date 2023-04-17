@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright'
 
 const targets = ['/tv/opas', '/tv', '/1-3339547']
 
-test.describe.only('accessibility analyzes', () => {
+test.describe('accessibility analyzes', () => {
   for (const target of targets) {
     test(target, async ({ page }, testInfo) => {
       await page.goto(target)
