@@ -1,5 +1,8 @@
 import { test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { markStatusToBrowserStack } from '../lib'
+
+test.afterEach(markStatusToBrowserStack)
 
 const targets = ['/tv/opas', '/tv', '/1-3339547']
 
