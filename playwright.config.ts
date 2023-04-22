@@ -54,26 +54,26 @@ export default defineConfig({
           wsEndpoint: parseBrowserStackWsEndpoint({ browser: 'chrome' })
         }
       }
+    },
+    {
+      name: 'firefox',
+      use: {
+        connectOptions: {
+          wsEndpoint: parseBrowserStackWsEndpoint({
+            browser: 'playwright-firefox'
+          })
+        }
+      }
+    },
+    {
+      name: 'webkit',
+      use: {
+        connectOptions: {
+          wsEndpoint: parseBrowserStackWsEndpoint({
+            browser: 'playwright-webkit'
+          })
+        }
+      }
     }
-    // {
-    //   name: 'firefox',
-    //   use: {
-    //     connectOptions: {
-    //       wsEndpoint: parseBrowserStackWsEndpoint({
-    //         browser: 'playwright-firefox'
-    //       })
-    //     }
-    //   }
-    // },
-    // {
-    //   name: 'webkit',
-    //   use: {
-    //     connectOptions: {
-    //       wsEndpoint: parseBrowserStackWsEndpoint({
-    //         browser: 'playwright-webkit'
-    //       })
-    //     }
-    //   }
-    // }
   ]
 })
