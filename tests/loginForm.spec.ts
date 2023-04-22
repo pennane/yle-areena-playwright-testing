@@ -1,7 +1,8 @@
 import { test, expect, Page } from '@playwright/test'
-import { openPathAndCloseCookiesPopup } from '../lib'
+import { markStatusToBrowserStack, openPathAndCloseCookiesPopup } from '../lib'
 
 test.beforeEach(openPathAndCloseCookiesPopup('/tv'))
+test.afterEach(markStatusToBrowserStack)
 
 test.describe('account registration', () => {
   test.describe('email validation', async () => {
