@@ -37,6 +37,7 @@ export default defineConfig({
   retries: 0,
   workers: 3,
   reporter: [['html', { open: 'never' }]],
+  timeout: 45000,
   use: {
     headless: true,
     baseURL: 'https://areena.yle.fi',
