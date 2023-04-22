@@ -7,6 +7,13 @@ For Metropolia Käyttäjäkeskeinen suunnittelu TX00CF82-3017
 - Arttu Pennanen
 - Perttu Vaarala
 
+## Usage
+
+### Setup
+
+1. Copy `.env.example` file and rename to `.env`
+2. Set the `BROWSERSTACK_ACCESS_KEY` value into it
+
 ### Running the tests
 
 ```bash
